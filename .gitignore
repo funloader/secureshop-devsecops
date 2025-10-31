@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+*.db
+*.sqlite3
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Security tools output
+.trivyignore
+trivy-report.json
+sonarqube-report.json
+zap-report.html
+
+# Secrets
+.env
+*.pem
+*.key
+vault-keys.txt
+
+# Build artifacts
+dist/
+build/
+*.tar.gz
