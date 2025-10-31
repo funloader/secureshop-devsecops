@@ -137,6 +137,26 @@ Use:
 
 ✅ **Result:** You now know how to send JSON POST requests correctly on Windows.
 
+## 🔒 6. Git & Security Workflow Fixes
+
+**Goal:** Fix Git push rejection caused by GitHub’s secret scanning and improve repository hygiene.
+
+### ⚠️ What Happened
+* GitHub rejected a push because a **fake Stripe API key** (`sk_live_...`) appeared in `apps/product-service/app.py`.
+* Even though it was fake, it matched the pattern of a real key and triggered **Push Protection**.
+
+### ✅ What You Did
+* Replaced the key with a **safe placeholder** apps/product-service/app.py line 14
+
+```
+API_KEY = "sk_live_fake_placeholder_for_demo_only"  # Fake key placeholder
+```
+* or **environment variable** approach:
+  ```python
+  import os
+  API_KEY = os.getenv("STRIPE_API_KEY", "demo_key_placeholder")
+
+
 ---
 
 ## 🧭 Overall Summary
