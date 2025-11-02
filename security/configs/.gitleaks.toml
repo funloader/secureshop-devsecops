@@ -1,0 +1,54 @@
+# Gitleaks Configuration for SecureShop Project
+title = "SecureShop Gitleaks Config"
+
+[extend]
+useDefault = true
+
+# Custom rules for our project
+[[rules]]
+id = "stripe-api-key"
+description = "Stripe API Key"
+regex = '''sk_(live|test)_[0-9a-zA-Z]{24,}'''
+tags = ["key", "stripe"]
+
+[[rules]]
+id = "aws-access-key"
+description = "AWS Access Key ID"
+regex = '''AKIA[0-9A-Z]{16}'''
+tags = ["key", "aws"]
+
+[[rules]]
+id = "aws-secret-key"
+description = "AWS Secret Access Key"
+regex = '''(?i)aws(.{0,20})?(?-i)['\"][0-9a-zA-Z\/+]{40}['\"]'''
+tags = ["key", "aws", "secret"]
+
+[[rules]]
+id = "generic-api-key"
+description = "Generic API Key"
+regex = '''(?i)(api[_-]?key|apikey)(.{0,20})?['\"][0-9a-zA-Z]{32,45}['\"]'''
+tags = ["key", "api"]
+
+[[rules]]
+id = "hardcoded-password"
+description = "Hardcoded Password"
+regex = '''(?i)(password|passwd|pwd)(.{0,20})?['\"][^'\"\s]{8,}['\"]'''
+tags = ["password", "credentials"]
+
+# Allowlist - paths to ignore
+[allowlist]
+description = "Allowlisted files and patterns"
+paths = [
+    '''\.md$''',
+    '''\.txt$''',
+    '''package-lock\.json$''',
+    '''go\.sum$'''
+]
+
+# Stop words - patterns to ignore
+stopwords = [
+    '''example''',
+    '''sample''',
+    '''test''',
+    '''dummy'''
+]

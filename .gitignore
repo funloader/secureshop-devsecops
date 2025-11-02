@@ -41,3 +41,10 @@ vault-keys.txt
 dist/
 build/
 *.tar.gz
+
+# Security scan reports (don't commit sensitive findings)
+*-report.json
+*-report.txt
+trivy-*.json
+snyk-*.json
+gitleaks-report.json
