@@ -5,20 +5,17 @@
 **Last Updated:** November 3, 2025
 
 ---
-
 ## 📋 Table of Contents
 
-## 📋 Table of Contents
-
-1. [Deployment Options](#🎯-deployment-options)
-2. [Option 1: Single VM (Development/Demo)](#🖥️-option-1-single-vm-developmentdemo)
-3. [Option 2: Multi-VM (Recommended for Showcase)](#🌐-option-2-multi-vm-recommended-for-showcase)
-4. [Option 3: Three-Tier Production (Interview/Portfolio)](#🏢-option-3-three-tier-production-interviewportfolio)
-5. [Infrastructure as Code](#🛠️-infrastructure-as-code)
-6. [Cost Comparison](#💰-cost-comparison)
-7. [Quick Setup Commands](#🚀-quick-setup-commands)
-8. [Demo Script](#🎬-demo-script)
-9. [Final Checklist](#📝-final-checklist)
+1. [Deployment Options](#deployment-options)
+2. [Option 1: Single VM (Development/Demo)](#option-1-single-vm-developmentdemo)
+3. [Option 2: Multi-VM (Recommended for Showcase)](#option-2-multi-vm-recommended-for-showcase)
+4. [Option 3: Three-Tier Production (Interview/Portfolio)](#option-3-three-tier-production-interviewportfolio)
+5. [Infrastructure as Code](#infrastructure-as-code)
+6. [Cost Comparison](#cost-comparison)
+7. [Quick Setup Commands](#quick-setup-commands)
+8. [Demo Script](#demo-script)
+9. [Final Checklist](#final-checklist)
 
 
 ---
