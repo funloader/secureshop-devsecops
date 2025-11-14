@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+    stages {
+        stage('Gitleaks Secret Scan') {
+            steps {
+                bat 'gitleaks detect --config=security\\configs\\.gitleaks.toml --source=apps --report-path=gitleaks-report.json --verbose'
+            }
+        }
+        stage('Trivy Dependency Scan') {
+            steps {
+                bat 'trivy fs --severity HIGH,CRITICAL --output trivy-fs-report.txt apps'
+            }
+        }
+        stage('Build Docker Images') {
+            steps {
+                bat 'docker build -t secureshop/product-service:latest apps\\product-service'
+                bat 'docker build -t secureshop/order-service:latest apps\\order-service'
+            }
+        }
+        stage('Trivy Container Scan') {
+            steps {
+                bat 'trivy image --severity HIGH,CRITICAL --output trivy-container-product.txt secureshop/product-service:latest'
+                bat 'trivy image --severity HIGH,CRITICAL --output trivy-container-order.txt secureshop/order-service:latest'
+            }
+        }
+    }
+    post {
+        always {
+            archiveArtifacts artifacts: '**/*.txt,**/*.json', followSymlinks: false
+        }
+    }
+}
