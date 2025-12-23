@@ -30,35 +30,4 @@ pipeline {
         }
     }
 }
-### debug
 
-           pipeline {
-    agent any
-
-    stages {
-        stage('GitHub config') {
-            steps {
-                git url:'<GitHub url>', branch:'main'
-            }
-        }
-        stage('Docker image build') {
-            steps {
-                sh 'docker build -t myapp .'
-            }
-        }
-        stage('Docker container build') {
-            steps {
-                sh 'docker rm -f myappcontainer || true'
-                sh 'docker run -d --name myappcontainer -p 80:80 myapp' 
-            }
-        }
-    }
-}
-
-### 
- 
-            FROM nginx:latest
-            RUN rm -rf /usr/share/nginx/html/*
-            COPY . /usr/share/nginx/html/
-            EXPOSE 80
-            CMD ["nginx","-g","daemon off;"]
