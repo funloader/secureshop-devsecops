@@ -1,19 +1,8 @@
-# 🔴 INTENTIONAL: Using older Python version for vulnerability demonstration
-FROM python:3.9-slim
-
+﻿FROM python:3.9-slim
 WORKDIR /app
-
-# Copy requirements first (for Docker layer caching)
 COPY requirements.txt .
-
-# 🔴 INTENTIONAL: Running as root (bad practice)
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy application code
-COPY app.py .
-
-# Expose port
+RUN pip install -r requirements.txt
+COPY . .
 EXPOSE 5000
-
-# 🔴 INTENTIONAL: No health check defined
+# VULNERABLE: Runs as root, no securityContext
 CMD ["python", "app.py"]

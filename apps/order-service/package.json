@@ -1,21 +1,14 @@
-{
-  "name": "order-service",
+﻿{
+  "name": "secureshop-order-service",
   "version": "1.0.0",
-  "description": "Order Service for SecureShop E-commerce",
+  "description": "Vulnerable Node.js order service",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js"
+    "start": "node app.js"
   },
-  "keywords": ["ecommerce", "orders", "microservices"],
-  "author": "funloader",
-  "license": "MIT",
   "dependencies": {
-    "express": "4.17.1",
-    "axios": "0.21.1",
-    "sqlite3": "5.0.2"
-  },
-  "devDependencies": {
-    "nodemon": "2.0.15"
+    "express": "^4.17.1",
+    "sqlite3": "^5.0.2",
+    "jsonwebtoken": "^8.5.1"
   }
 }
