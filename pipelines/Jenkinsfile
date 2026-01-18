@@ -1,33 +1,23 @@
 pipeline {
-    agent any
-    stages {
-        stage('Gitleaks Secret Scan') {
-            steps {
-                bat 'gitleaks detect --config=security\\configs\\.gitleaks.toml --source=apps --report-path=gitleaks-report.json --verbose'
-            }
-        }
-        stage('Trivy Dependency Scan') {
-            steps {
-                bat 'trivy fs --severity HIGH,CRITICAL --output trivy-fs-report.txt apps'
-            }
-        }
-        stage('Build Docker Images') {
-            steps {
-                bat 'docker build -t secureshop/product-service:latest apps\\product-service'
-                bat 'docker build -t secureshop/order-service:latest apps\\order-service'
-            }
-        }
-        stage('Trivy Container Scan') {
-            steps {
-                bat 'trivy image --severity HIGH,CRITICAL --output trivy-container-product.txt secureshop/product-service:latest'
-                bat 'trivy image --severity HIGH,CRITICAL --output trivy-container-order.txt secureshop/order-service:latest'
-            }
-        }
+  agent any
+  stages {
+    stage('Build Product Service') {
+      steps {
+        sh 'docker build -t secureshop/product-service apps/product-service'
+      }
     }
-    post {
-        always {
-            archiveArtifacts artifacts: '**/*.txt,**/*.json', followSymlinks: false
-        }
+    stage('Build Order Service') {
+      steps {
+        sh 'docker build -t secureshop/order-service apps/order-service'
+      }
     }
+    stage('SonarQube Analysis') {
+      steps {
+        withSonarQubeEnv('SonarQube') {
+              sh 'sonar-scanner -Dsonar.projectKey=secureshop -Dsonar.sources=apps/product-service -Dsonar.host.url=http://host.docker.internal:9000 -Dsonar.login=squ_97493656137ebbf15b4795ff849f0ee696ef6dab'
+        }
+      }
+    }
+  }
 }
 

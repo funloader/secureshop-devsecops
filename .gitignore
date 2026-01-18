@@ -1,50 +1,27 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-env/
-venv/
-*.db
-*.sqlite3
+﻿# OS
+.DS_Store
+Thumbs.db
 
 # Node
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+npm-debug.log
+
+# Python
+__pycache__/
+*.pyc
+.env
+.venv/
+
+# Docker
+*.log
+docker-compose.override.yml
+
+# Reports (generated)
+reports/
+*.sarif
+*.json
+sonarqube/
 
 # IDE
 .vscode/
 .idea/
-*.swp
-*.swo
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Security tools output
-.trivyignore
-trivy-report.json
-sonarqube-report.json
-zap-report.html
-
-# Secrets
-.env
-*.pem
-*.key
-vault-keys.txt
-
-# Build artifacts
-dist/
-build/
-*.tar.gz
-
-# Security scan reports (don't commit sensitive findings)
-*-report.json
-*-report.txt
-trivy-*.json
-snyk-*.json
-gitleaks-report.json
