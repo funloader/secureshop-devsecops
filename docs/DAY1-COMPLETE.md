@@ -110,26 +110,66 @@ snyk test
 
 ```text
 secureshop-devsecops/
-├── apps/
-│ ├── product-service/
-│ │ ├── app.py ✅
-│ │ ├── requirements.txt ✅
-│ │ └── Dockerfile ✅
-│ └── order-service/
-│  ├── app.js ✅
-│  ├── package.json ✅
-│  └── Dockerfile ✅
-├── security/
-│ └── configs/
-│ └── .gitleaks.toml ✅
-├── docs/
-│ ├── SECURITY-FINDINGS.md ✅
-│ └── DAY1-COMPLETE.md ✅ (this file)
-├── scripts/
-│ └── run-security-scans.sh ✅
-├── sonar-project.properties ✅
-├── .gitignore ✅
-└── README.md ✅
+│
+├── README.md                          # Your provided README (commit this first)
+├── .gitignore                         # Node modules, Docker images, reports
+├── .pre-commit-config.yaml           # Gitleaks hook
+├── gitleaks.toml                     # Gitleaks config
+│
+├── apps/                             # Microservices
+│   ├── product-service/              # Python Flask
+│   │   ├── app.py                   # Vulnerable Flask app
+│   │   ├── requirements.txt         # Outdated deps (CVEs)
+│   │   ├── Dockerfile               # Runs as root
+│   │   └── tests/                   # Basic tests
+│   │
+│   └── order-service/               # Node.js Express
+│       ├── app.js                   # Hardcoded secrets
+│       ├── package.json             # Vulnerable deps
+│       ├── Dockerfile               # Multi-stage missing USER
+│       └── tests/
+│
+├── docker-compose.yml               # Local dev (Day 1)
+├── k8s/                             # Kubernetes manifests (Day 3-4)
+│   ├── base/
+│   │   ├── deployment.yaml
+│   │   ├── service.yaml
+│   │   └── configmap.yaml
+│   ├── opa-policies/                # OPA Gatekeeper
+│   └── helm/                        # Helm charts
+│
+├── ci/                              # Pipelines
+│   ├── jenkins/                     # Jenkinsfile, agents
+│   └── github-actions/
+│       ├── build-scan.yml          # Trivy, Sonar, ZAP
+│       └── deploy-k8s.yml
+│
+├── security-tools/                  # Tool configs
+│   ├── sonarqube/                  # sonar-project.properties
+│   ├── vault/                      # Vault policies
+│   ├── falco/                      # Falco rules
+│   └── defectdojo/                 # API config
+│
+├── docs/                            # Day-wise guides
+│   ├── DAY1.md                     # Apps + Gitleaks/Sonar
+│   ├── DAY2-3.md                   # Docker + Pipeline
+│   ├── DAY4.md                     # K8s + OPA/Vault
+│   └── DAY5.md                     # Runtime + Demo
+│
+├── reports/                         # Generated (gitignore)
+│   ├── gitleaks-report.json
+│   ├── sonar-report.json
+│   ├── trivy-results.sarif
+│   └── kube-bench.json
+│
+├── terraform/                       # IaC (optional stretch)
+│   └── main.tf
+│
+└── scripts/                         # PowerShell helpers
+    ├── setup.ps1                   # One-click prereqs
+    ├── scan-all.ps1                # All tools
+    └── deploy-minikube.ps1
+
 ```
 ---
 
