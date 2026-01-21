@@ -1,180 +1,10 @@
-# ✅ DAY 1 COMPLETE - Source Code Security
+**Day 1 Start: Complete PowerShell Setup (4 hours total)**
 
-**Date Completed:** November 1, 2025  
-**Time Spent:** ~6-8 hours  
+Open PowerShell as Administrator in your project root. Copy-paste these commands exactly as shown. Each step includes verification.
 
----
+## Step 0: Environment Check & Prereqs (15 mins)
 
-## 🎯 Objectives Achieved
-
-- [x] Built Product Service (Python Flask)
-- [x] Built Order Service (Node.js Express)
-- [x] Planted intentional vulnerabilities
-- [x] Installed 4 security scanning tools
-- [x] Generated security findings reports
-- [x] Documented all findings
-- [x] Created automation scripts
-- [x] Pushed to GitHub
-
----
-
-## 🛠️ Tools Installed & Configured
-
-### 1. Gitleaks (Secret Scanning)
-- **Version:** v8.18.4
-- **Configuration:** `security/configs/.gitleaks.toml`
-- **Command:** `gitleaks detect --config=security/configs/.gitleaks.toml --source=.`
-- **Findings:** 5 hardcoded secrets detected
-
-### 2. SonarQube Community (SAST)
-- **Version:** Community 10.2
-- **Running:** Docker container on port 9000
-- **Configuration:** `sonar-project.properties`
-- **Access:** http://localhost:9000
-- **Credentials:** admin / 
-
-### 3. Trivy (Dependency & Container Scanning)
-- **Version:** v0.47.0
-- **Scans:** Filesystem + Docker images
-- **Command:** `trivy fs .` or `trivy image <image>`
-
-### 4. Snyk (Alternative Dependency Scanner)
-- **Version:** v1.1293.0
-- **Authenticated:** Yes
-- **Command:** `snyk test`
-
----
-
-## 📊 Security Posture - Baseline
-
-**Total Issues Found:** ~50+
-
-**By Severity:**
-- 🔴 Critical: 8
-- 🟠 High: 15
-- 🟡 Medium: 20
-- 🔵 Low: 10+
-
-**By Category:**
-- Hardcoded secrets: 5
-- SQL injection: 1
-- Vulnerable dependencies: 30+
-- Misconfigurations: 10+
-- Missing security controls: Multiple
-
----
-
-## 🚀 Quick Commands Reference
-
-### Start All Services
-
-**Product Service:**
-```
-cd apps/product-service
-python3 app.py
-```
-
-**Order Service:**
-```
-cd apps/order-service
-npm start
-```
-
-**SonarQube:**
-docker start sonarqube
-
-### Run Security Scans
-
-**All tools at once:**
-```
-./scripts/run-security-scans.sh
-```
-
-**Individual tools:**
-
-**Gitleaks**
-gitleaks detect --config=security/configs/.gitleaks.toml --source=.
-
-**Trivy**
-trivy fs --severity HIGH,CRITICAL .
-
-**SonarQube**
-sonar-scanner
-
-**Snyk**
-snyk test
-
-
----
-## 📁 Project Structure (Day 1)
-
-```text
-secureshop-devsecops/
-│
-├── README.md                          # Your provided README (commit this first)
-├── .gitignore                         # Node modules, Docker images, reports
-├── .pre-commit-config.yaml           # Gitleaks hook
-├── gitleaks.toml                     # Gitleaks config
-│
-├── apps/                             # Microservices
-│   ├── product-service/              # Python Flask
-│   │   ├── app.py                   # Vulnerable Flask app
-│   │   ├── requirements.txt         # Outdated deps (CVEs)
-│   │   ├── Dockerfile               # Runs as root
-│   │   └── tests/                   # Basic tests
-│   │
-│   └── order-service/               # Node.js Express
-│       ├── app.js                   # Hardcoded secrets
-│       ├── package.json             # Vulnerable deps
-│       ├── Dockerfile               # Multi-stage missing USER
-│       └── tests/
-│
-├── docker-compose.yml               # Local dev (Day 1)
-├── k8s/                             # Kubernetes manifests (Day 3-4)
-│   ├── base/
-│   │   ├── deployment.yaml
-│   │   ├── service.yaml
-│   │   └── configmap.yaml
-│   ├── opa-policies/                # OPA Gatekeeper
-│   └── helm/                        # Helm charts
-│
-├── ci/                              # Pipelines
-│   ├── jenkins/                     # Jenkinsfile, agents
-│   └── github-actions/
-│       ├── build-scan.yml          # Trivy, Sonar, ZAP
-│       └── deploy-k8s.yml
-│
-├── security-tools/                  # Tool configs
-│   ├── sonarqube/                  # sonar-project.properties
-│   ├── vault/                      # Vault policies
-│   ├── falco/                      # Falco rules
-│   └── defectdojo/                 # API config
-│
-├── docs/                            # Day-wise guides
-│   ├── DAY1.md                     # Apps + Gitleaks/Sonar
-│   ├── DAY2-3.md                   # Docker + Pipeline
-│   ├── DAY4.md                     # K8s + OPA/Vault
-│   └── DAY5.md                     # Runtime + Demo
-│
-├── reports/                         # Generated (gitignore)
-│   ├── gitleaks-report.json
-│   ├── sonar-report.json
-│   ├── trivy-results.sarif
-│   └── kube-bench.json
-│
-├── terraform/                       # IaC (optional stretch)
-│   └── main.tf
-│
-└── scripts/                         # PowerShell helpers
-    ├── setup.ps1                   # One-click prereqs
-    ├── scan-all.ps1                # All tools
-    └── deploy-minikube.ps1
-
-```
----
-
-# Step 0: Environment Check & Prereqs (15 mins)
-```
+```powershell
 # 1. Navigate to your repo (replace with your actual path)
 cd "C:\Users\Hrishikesh\Documents\secureshop-devsecops"
 pwd
@@ -190,53 +20,13 @@ npm --version
 
 # 4. Create full folder structure
 New-Item -ItemType Directory -Force -Path @("apps/product-service","apps/order-service","ci/github-actions","k8s/base","security-tools","docs","scripts","reports")
-
-
-## 🎓 What We Learned
-
-1. **Secret Scanning** - How hardcoded credentials are easily detected
-2. **SAST Analysis** - Finding code-level vulnerabilities before runtime
-3. **Dependency Management** - Tracking vulnerable packages in our supply chain
-4. **Container Security** - Scanning Docker images for OS & app vulnerabilities
-5. **Security Automation** - Running multiple tools efficiently
 ```
 
-✅ Verify: 9 folders created. `dir` shows complete structure.
-
-### ✅ Correct Fix (Safe & Recommended)
-#### Step 1: Pull remote changes with rebase
-
-Run:
-```
-git pull origin main --rebase
-```
-
-This will:
-* Fetch GitHub’s commits
-* Replay your local commit on top
-* Keep history clean (no merge commit)
-
-#### Step 2: Push again
-```
-git push origin main
-```
-✅ This should now succeed.
-
-#### Final sanity check (after push)
-
-```
-git status
-git log --oneline --graph --all
-```
-You should see:
-* Clean working tree
-* Local and remote in sync
-
----
+**✅ Verify**: 9 folders created. `dir` shows complete structure.
 
 ## Step 1: Core Files Setup (20 mins)
 
-```
+```powershell
 # 5. Create .gitignore
 @"
 # OS
@@ -275,11 +65,11 @@ git commit -m "Initial SecureShop structure with README"
 git push origin main
 ```
 
----
+**✅ Verify**: GitHub shows repo with structure + README.
 
 ## Step 2: Product Service (Flask) - VULNERABLE VERSION (45 mins)
 
-```
+```powershell
 # 8. Create vulnerable Flask app
 cd apps/product-service
 @"
@@ -313,7 +103,7 @@ def list_products():
     conn = sqlite3.connect('products.db')
     c = conn.cursor()
     c.execute('SELECT * FROM products')
-    products = [{"id": row[0], "name": row[1], "price": row[2], "stock": row[3]} for row in c.fetchall()]
+    products = [{"id": row[0], "name": row [linkedin](https://www.linkedin.com/pulse/automating-windows-security-audits-powershell-tool-bhutto-xjn8f), "price": row [cloudthat](https://www.cloudthat.com/resources/blog/unleashing-the-power-of-powershell-automation-security-and-devops/), "stock": row [azure.microsoft](https://azure.microsoft.com/en-in/solutions/devsecops)} for row in c.fetchall()]
     conn.close()
     return jsonify(products)
 
@@ -345,11 +135,21 @@ pip install -r requirements.txt
 python app.py
 ```
 
----
+**New PowerShell tab**: Test the SQLi + secret exposure:
+```powershell
+# Terminal 2: Test vulnerable endpoints
+curl http://localhost:5000/
+curl "http://localhost:5000/products/search?name=laptop"
+curl "http://localhost:5000/products/search?name=%; DROP TABLE products;--"
+```
+
+**Stop Flask** (Ctrl+C) after seeing responses.
+
+**✅ Checkpoint 1**: App runs, SQLi works, secret partially exposed.
 
 ## Step 3: Order Service (Node.js) - VULNERABLE VERSION (45 mins)
 
-```
+```powershell
 # 11. Back to product-service parent, create Node app
 cd ..\order-service
 
@@ -432,28 +232,226 @@ app.listen(3000, '0.0.0.0', () => {
 # 14. Install & test
 npm install
 npm start
-
 ```
 
-## 🔜 Day 1 Status: READY FOR SCANS
+**New PowerShell tab**: Test it:
+```powershell
+curl http://localhost:3000/
+curl -X POST http://localhost:3000/orders -H "Content-Type: application/json" -d "{\"customer_name\":\"Hrishikesh\",\"product_id\":1,\"quantity\":2}"
+curl http://localhost:3000/orders
+```
 
-✅ Product Service: SQLi + debug mode + old deps
-✅ Order Service: 3 hardcoded secrets + 16 vulns (npm audit)
-✅ docker-compose: Full stack works
-✅ GitHub: Committed with intentional vulns
-🚀 NEXT: Gitleaks detects AWS keys in 5 mins
+**✅ Checkpoint 2**: Both services run with intentional vulns visible.
+
+## Step 4: docker-compose.yml for Local Testing (15 mins)
+
+```powershell
+# 15. Back to repo root
+cd ..\..
+
+# 16. Vulnerable docker-compose.yml
+@"
+version: '3.8'
+services:
+  product-service:
+    build: ./apps/product-service
+    ports:
+      - "5000:5000"
+    # INTENTIONALLY VULNERABLE: runs as root
+
+  order-service:
+    build: ./apps/order-service  
+    ports:
+      - "3000:3000"
+    # No healthcheck, no securityContext
+"@ | Out-File -FilePath docker-compose.yml -Encoding UTF8
+
+# 17. Test full stack
+docker-compose up --build
+```
+
+**New tab test**:
+```powershell
+curl http://localhost:5000/products
+curl -X POST http://localhost:3000/orders -H "Content-Type: application/json" -d "{\"customer_name\":\"Test\",\"product_id\":1,\"quantity\":3}"
+```
+
+## Day 1 Checkpoint: Security Scans (60 mins)
+
+**Type this exactly after docker-compose stops**:
+
+```
+Day 1 scans ready
+```
+
+**Current Status**: 
+- ✅ Apps built with 8 intentional vulns
+- ✅ docker-compose works 
+- ✅ Secrets/SQLi exposed for Day 1 scans
+- ⏳ Gitleaks/SonarQube/Trivy next
+
+**Reply "Day 1 scans ready"** → Get Gitleaks + SonarQube setup catching your secrets immediately.
+
+**Total time so far: 3 hours. Perfect pacing! 🚀**
 
 
----
+**Day 1 Scans: Gitleaks + SonarQube + Snyk (60 mins)**
 
-## 💡 Pro Tips
+Perfect! Apps are vulnerable and ready. Now we'll install security tools and watch them catch your intentional issues. Continue in **same PowerShell window** (repo root).
 
-1. Run `./scripts/run-security-scans.sh` before every commit
-2. Check SonarQube dashboard regularly
-3. Update dependencies when vulnerabilities are found
-4. Document new findings as they appear
+## Step 5: Gitleaks - Secret Scanning (15 mins)
 
----
+```powershell
+# 18. Install Gitleaks (Windows binary)
+cd C:\Users\Hrishikesh\Documents\secureshop-devsecops
+winget install gitleaks.gitleaks  # OR download from GitHub releases
 
-**Status:** ✅ Day 1 Complete - Ready for Day 2!  
-**Next Session:** Jenkins Pipeline Setup
+# 19. Create Gitleaks config
+@"
+title = "SecureShop Secret Patterns"
+[[rules]]
+id = "stripe-secrets"
+description = "Stripe API keys"
+regex = '''sk_live_....|sk_test_....'''
+entropy = 4.1
+[[rules]]
+id = "aws-keys"
+description = "AWS Access Key ID"
+regex = '''AKIA[0-9A-Z]{16}'''
+[[rules]]
+id = "jwt-secrets"
+description = "JWT Secret Keys"
+regex = '''(?i)(secret|key|token)([-_]?phrase|=|"|`'){1}["]?[^"\r\n]{8,}["]'''
+"@ | Out-File -FilePath gitleaks.toml -Encoding UTF8
+
+# 20. SCAN - Should find 3 secrets immediately!
+gitleaks detect --source . --report-format json --report-path reports/gitleaks-report.json --verbose
+
+# 21. View results
+Get-Content reports/gitleaks-report.json | ConvertFrom-Json | Format-Table Description, File, Line, Match
+```
+
+**✅ Expected**: Finds `STRIPE_SECRET`, `AWS_ACCESS_KEY`, `JWT_SECRET`. Screenshot this!
+
+## Step 6: SonarQube Community - SAST (25 mins)
+
+```powershell
+# 22. Download SonarScanner (if not from prior work)
+mkdir sonarqube -Force
+cd sonarqube
+Invoke-WebRequest -Uri "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-windows.zip" -OutFile sonar-scanner.zip
+Expand-Archive sonar-scanner.zip -DestinationPath .
+cd ..
+
+# 23. Sonar project config
+@"
+sonar.projectKey=secureshop-devsecops
+sonar.projectName=SecureShop DevSecOps Demo
+sonar.sources=apps
+sonar.exclusions=**/node_modules/**,**/tests/**
+sonar.python.version=3.9
+sonar.nodejs.executable=nodejs
+"@ | Out-File -FilePath sonar-project.properties -Encoding UTF8
+
+# 24. START SONARQUBE (new PowerShell Admin tab)
+# Terminal 2: Start SonarQube
+cd sonarqube\sonarqube-10.4.0.12330\bin\windows-x86-64
+Start-Process -FilePath .\StartSonar.bat
+
+# 25. Wait 2 mins, then test localhost:9000 → admin/admin → Create project "secureshop-devsecops"
+# Back to main terminal after setup:
+cd C:\Users\Hrishikesh\Documents\secureshop-devsecops
+.\sonarqube\sonar-scanner-5.0.1.3006-windows\bin\sonar-scanner.bat
+```
+
+**✅ Expected**: 
+- `localhost:9000` shows SAST issues: SQLi in Flask, debug mode, missing validation
+- 15+ issues across Python/Node
+- Quality Gate FAIL (perfect for demo!)
+
+## Step 7: Snyk OSS - Dependency Scanning (15 mins)
+
+```powershell
+# 26. Install Snyk CLI
+npm install -g snyk
+snyk auth  # Follow browser link, paste token
+
+# 27. Scan both services
+cd apps\product-service
+snyk test --json-file=../../reports/snyk-product.json
+cd ..\order-service
+snyk test --json-file=../../reports/snyk-order.json
+cd ..\..
+
+# 28. View high/critical vulns
+Get-Content reports\snyk-product.json | ConvertFrom-Json | Select-Object -ExpandProperty vulnerabilities | Where-Object severity -in @("high","critical") | Format-Table id, title, severity
+```
+
+**✅ Expected**: 
+- Flask/Werkzeug CVEs in product-service
+- Express/sqlite3 CVEs in order-service
+- 8+ vulnerabilities total
+
+## Step 8: GitHub Actions Workflow (5 mins)
+
+```powershell
+# 29. Create first workflow
+mkdir ci\github-actions -Force
+@"
+name: Day 1 - Source Code Security
+on: [push, pull_request]
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Gitleaks Scan
+      uses: gitleaks/gitleaks-action@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: SonarQube Scan
+      uses: sonarsource/sonarqube-scan-action@v1
+      with:
+        args: >
+          -Dsonar.projectKey=secureshop-devsecops
+          -Dsonar.organization=your-org
+          -Dsonar.host.url=https://sonarcloud.io
+      
+    - name: Snyk Dependency Scan
+      uses: snyk/actions/node@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        args: --severity-threshold=high
+"@ | Out-File -FilePath ci\github-actions\day1-scans.yml -Encoding UTF8
+
+# 30. Commit everything
+git add .
+git commit -m "Day 1: Vulnerable apps + Gitleaks/SonarQube/Snyk scans complete"
+git push origin main
+```
+
+## 🚨 **Day 1 MASTER CHECKPOINT** (Verify ALL):
+
+```
+✅ [ ] Gitleaks found 3 secrets (screenshot)
+✅ [ ] SonarQube localhost:9000 shows 15+ issues  
+✅ [ ] Snyk found 8+ dependency vulns
+✅ [ ] docker-compose up works (both APIs)
+✅ [ ] GitHub Actions workflow in repo
+✅ [ ] Repo structure matches checklist
+```
+
+**Copy-paste your results**:
+```
+Gitleaks: X secrets found
+SonarQube: XX issues (X critical)
+Snyk: X high/critical vulns
+docker-compose: Y/N working
+```
+
+**Reply with your results** → **Day 2: Docker + Trivy** automatically starts! 
+
+**Time check**: 4 hours total. You're crushing it! 🚀
