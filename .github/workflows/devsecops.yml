@@ -1,0 +1,40 @@
+name: DevSecOps-Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  security_scans:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # 1. SECRET SCANNING
+      - name: Gitleaks Scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true # We want the pipeline to keep going for learning purposes
+
+      # 2. SCA (Software Composition Analysis)
+      - name: Trivy FS Scan (Product API)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: './product-api'
+          format: 'table'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Trivy FS Scan (Order API)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: './order-api'
+          format: 'table'
+          severity: 'CRITICAL,HIGH'
