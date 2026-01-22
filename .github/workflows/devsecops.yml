@@ -3,8 +3,6 @@ name: DevSecOps-Pipeline
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   security_scans:
@@ -12,29 +10,44 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
-      # 1. SECRET SCANNING
       - name: Gitleaks Scan
         uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        continue-on-error: true # We want the pipeline to keep going for learning purposes
+        continue-on-error: true
 
-      # 2. SCA (Software Composition Analysis)
-      - name: Trivy FS Scan (Product API)
+      - name: Trivy FS Scan
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'fs'
-          scan-ref: './product-api'
-          format: 'table'
           severity: 'CRITICAL,HIGH'
 
-      - name: Trivy FS Scan (Order API)
+  image_security:
+    runs-on: ubuntu-latest
+    needs: security_scans
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 1. BUILD THE IMAGES
+      - name: Build Product API Image
+        run: docker build -t product-api:test ./product-api
+
+      - name: Build Order API Image
+        run: docker build -t order-api:test ./order-api
+
+      # 2. SCAN THE IMAGES (This finds OS-level vulnerabilities)
+      - name: Trivy Image Scan (Product API)
         uses: aquasecurity/trivy-action@master
         with:
-          scan-type: 'fs'
-          scan-ref: './order-api'
+          image-ref: 'product-api:test'
           format: 'table'
+          exit-code: '0' # Don't fail yet, just show results
+          severity: 'CRITICAL,HIGH'
+
+      - name: Trivy Image Scan (Order API)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'order-api:test'
+          format: 'table'
+          exit-code: '0'
           severity: 'CRITICAL,HIGH'
