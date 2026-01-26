@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DevSecOps Dashboard</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f4; padding: 20px; }
+        .card { background: white; padding: 15px; margin: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; }
+        .status { color: green; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Security Dashboard</h1>
+    <div id="product-section" class="card">
+        <h2>Products</h2>
+        <ul id="product-list">Loading...</ul>
+    </div>
+    <div id="order-section" class="card">
+        <h2>Latest Orders</h2>
+        <ul id="order-list">Loading...</ul>
+    </div>
+
+    <script>
+        // In production, these would be managed by an Ingress controller or Environment Variable
+        const PRODUCT_API = "http://localhost:5001/product?id=1";
+        const ORDER_API = "http://localhost:5002/orders";
+
+        async function fetchData() {
+            try {
+                const prodRes = await fetch(PRODUCT_API);
+                const prodData = await prodRes.json();
+                document.getElementById('product-list').innerHTML = `<li>${prodData.name} - $${prodData.price}</li>`;
+
+                const orderRes = await fetch(ORDER_API);
+                const orderData = await orderRes.json();
+                document.getElementById('order-list').innerHTML = orderData.map(o => `<li>Order ID: ${o.id}</li>`).join('');
+            } catch (err) {
+                console.error("Connection failed. Check CORS settings!", err);
+            }
+        }
+        fetchData();
+    </script>
+</body>
+</html>

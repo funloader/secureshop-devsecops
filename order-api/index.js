@@ -1,5 +1,8 @@
 const express = require('express');
+const cors = require('cors');
+
 const app = express();
+app.use(cors());
 
 // INTENTIONAL VULNERABILITY: Hardcoded AWS Keys for Gitleaks to find
 const AWS_ACCESS_KEY = "AKIAIMNOTAREALKEY123"; 

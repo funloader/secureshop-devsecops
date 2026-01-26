@@ -1,7 +1,9 @@
 from flask import Flask, request
+from flask_cors import CORS
 import sqlite3
 
 app = Flask(__name__)
+CORS(app)
 
 # INTENTIONAL VULNERABILITY: Hardcoded Secret
 SECRET_KEY = "DEV_SECRET_KEY_12345"
