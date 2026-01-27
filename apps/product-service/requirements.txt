@@ -1,2 +1,0 @@
-﻿Flask==2.0.3    # Old version with vulns
-Werkzeug==2.0.3 # Known issues
