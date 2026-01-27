@@ -7,9 +7,9 @@ sudo systemctl status docker
 *     sudo systemctl start docker
 *     sudo systemctl enable docker
 ## step 2 
-sudo usermod -aG docker shuhari
+*      sudo usermod -aG docker shuhari
 ## step 3 
-newgrp docker
+*      newgrp docker
 ## step 4 
 docker ps
 ## step 5 start minikube 
