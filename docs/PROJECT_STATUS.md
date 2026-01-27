@@ -52,7 +52,7 @@ This project simulates a **secure e-commerce platform for hacker/security hardwa
 ---
 
 ## 🧱 Current Folder Structure
-
+```
 ├───ansible
 ├───app  # Flask app
 │   ├───auth
@@ -67,7 +67,7 @@ This project simulates a **secure e-commerce platform for hacker/security hardwa
 │   ├───opa
 │   └───trivy
 └───terraform
-
+```
 ---
 
 ## 🚀 What’s Coming Next (Roadmap)
