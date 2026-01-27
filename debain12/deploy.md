@@ -1,8 +1,9 @@
 # deploy
-first error 
+## first error 
 Your user does not have permission to access:
+## step 1
 sudo systemctl status docker
-## if running go on if not 
+if running go on if not 
 sudo systemctl start docker
 sudo systemctl enable docker
 ## step 2 
