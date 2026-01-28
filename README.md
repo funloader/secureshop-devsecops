@@ -1,4 +1,4 @@
-### 🚀 Secure Microservices Pipeline
+### 🚀 End to End Secure Microservices Pipeline
 
 A hands-on DevSecOps implementation focusing on shifting security left.
 
