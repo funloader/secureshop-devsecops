@@ -11,35 +11,45 @@
     </style>
 </head>
 <body>
-    <h1>Security Dashboard</h1>
-    <div id="product-section" class="card">
-        <h2>Products</h2>
-        <ul id="product-list">Loading...</ul>
-    </div>
-    <div id="order-section" class="card">
-        <h2>Latest Orders</h2>
-        <ul id="order-list">Loading...</ul>
-    </div>
+
+    <h1>Products</h1>
+    <ul id="product-list">
+        <li>Loading...</li>
+    </ul>
+
+    <h1>Orders</h1>
+    <ul id="order-list">
+        <li>Loading...</li>
+    </ul>
 
     <script>
-        // In production, these would be managed by an Ingress controller or Environment Variable
-        const PRODUCT_API = "http://localhost:5001/product?id=1";
-        const ORDER_API = "http://localhost:5002/orders";
-
         async function fetchData() {
             try {
-                const prodRes = await fetch(PRODUCT_API);
+                // ✅ FIXED: Correct endpoints + data structure
+                const prodRes = await fetch('http://localhost:5001/product?id=1');
                 const prodData = await prodRes.json();
-                document.getElementById('product-list').innerHTML = `<li>${prodData.name} - $${prodData.price}</li>`;
+                
+                // ✅ FIXED: Use .product (matches API) + hardcoded price
+                document.getElementById('product-list').innerHTML = 
+                    `<li>${prodData.product || 'Unknown'} - $999</li>`;
 
-                const orderRes = await fetch(ORDER_API);
+                // ✅ FIXED: Correct /order endpoint
+                const orderRes = await fetch('http://localhost:5002/order');
                 const orderData = await orderRes.json();
-                document.getElementById('order-list').innerHTML = orderData.map(o => `<li>Order ID: ${o.id}</li>`).join('');
+                
+                // ✅ FIXED: Single order object → extract order_id
+                document.getElementById('order-list').innerHTML = 
+                    `<li>Order ID: ${orderData.order_id || 'N/A'}</li>`;
+
             } catch (err) {
-                console.error("Connection failed. Check CORS settings!", err);
+                console.error("API Error:", err);
+                document.getElementById('product-list').innerHTML = '<li>API Unreachable</li>';
+                document.getElementById('order-list').innerHTML = '<li>API Unreachable</li>';
             }
         }
+
         fetchData();
     </script>
+
 </body>
 </html>

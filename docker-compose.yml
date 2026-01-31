@@ -2,11 +2,12 @@ version: '3.8'
 services:
   frontend:
     build: ./frontend
-    ports:
-      - "8080:80"
+    ports: ["8080:80"]
     depends_on:
       - product-api
       - order-api
+    extra_hosts:
+      - "host.docker.internal:host-gateway"  # Windows/Mac fix
   product-api:
     build: ./product-api
     ports:
