@@ -9,3 +9,4 @@ spec:
       image: aquasec/kube-bench:latest
       command: ["kube-bench", "run", "--targets", "node"]
   restartPolicy: Never
+      command: ["kube-bench", "run", "--targets", "node,controlplane,etcd,policies"]

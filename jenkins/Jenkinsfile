@@ -1,0 +1,28 @@
+﻿pipeline {
+    agent any
+    stages {
+        stage('SAST') {
+            steps {
+                sh 'gitleaks detect --report-format json --report-file gitleaks.json'
+                sh 'docker run --rm sonarqube:community sonar-scanner'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'docker build -t product-api:test ./product-api'
+            }
+        }
+        stage('SCA') {
+            steps {
+                sh 'docker run --rm aquasec/trivy fs .'
+                sh 'docker run --rm snyk/snyk:snyk-alpine test'
+            }
+        }
+        stage('DAST') {
+            steps {
+                sh 'docker-compose up -d'
+                sh 'docker run --rm -it owasp/zap2docker-stable zap-baseline.py -t http://localhost:8080'
+            }
+        }
+    }
+}

@@ -2,17 +2,32 @@ version: '3.8'
 services:
   frontend:
     build: ./frontend
-    ports: ["8080:80"]
+    ports:
+      - "8080:80"
     depends_on:
       - product-api
       - order-api
-    extra_hosts:
-      - "host.docker.internal:host-gateway"  # Windows/Mac fix
+      - auth-api
+    networks:
+      - app-network
   product-api:
     build: ./product-api
     ports:
       - "5001:5001"
+    networks:
+      - app-network
   order-api:
-    build: ./order-api
+    build: ./order-api  
     ports:
       - "5002:5002"
+    networks:
+      - app-network
+  auth-api:  # NEW: Authentication API
+    build: ./auth-api
+    ports:
+      - "5003:5003"
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge

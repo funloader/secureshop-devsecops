@@ -1,0 +1,100 @@
+﻿version: '3.8'
+services:
+  # YOUR APPS (Working!)
+  frontend:
+    build: ./frontend
+    ports: ['8080:80']
+    networks: [app-net]
+
+  product-api:
+    build: ./product-api
+    ports: ['5001:5001']
+    networks: [app-net]
+
+  order-api:
+    build: ./order-api
+    ports: ['5002:5002']
+    networks: [app-net]
+
+  # FIXED Security Tools (Volume mounts + correct images)
+  gitleaks:
+    image: gitleaks/gitleaks:latest
+    volumes:
+      - .:/repo
+      - ./reports:/reports
+    command: detect --source /repo --report-format json --report-file /reports/gitleaks.json
+    networks: [tools-net]
+
+  trivy:
+    image: aquasec/trivy:latest
+    volumes:
+      - .:/workspace
+      - ./reports:/reports
+    command: image --format json --output /reports/trivy.json frontend product-api:test order-api:test
+    networks: [tools-net]
+
+  sonarqube:
+    image: sonarqube:community
+    ports: ['9000:9000']
+    environment:
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+    networks: [tools-net]
+
+  snyk:
+    image: snyk/snyk:node-alpine
+    volumes:
+      - .:/workspace
+      - ./reports:/reports
+    command: test --json-file=/reports/snyk.json
+    environment:
+      SNYK_TOKEN: dummy-token-for-scan
+    networks: [tools-net]
+
+  zap:
+    image: ghcr.io/zaproxy/zaproxy:stable
+    volumes:
+      - ./reports:/zap/wrk  # ✅ FIXED volume mount
+    ports:
+      - '8090:8080'
+    networks:
+      - app-net
+    command: >
+      zap-baseline.py
+      -t http://frontend:80
+      -r /zap/wrk/zap-report.html
+      -J /zap/wrk/zap-report.json
+
+  clair:
+    image: quay.io/projectquay/clair:v4.6.2
+    ports: ['6060-6061:6060-6061']
+    volumes:
+      - clair_config:/etc/clair
+    command: --config=/etc/clair/config.yaml
+    networks: [tools-net]
+
+  vault:
+    image: vault:latest  # ✅ FIXED tag
+    cap_add: [IPC_LOCK]
+    ports: ['8200:8200']
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID=devroot
+      VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200
+    networks: [tools-net]
+
+  # Lightweight versions (no privileged required)
+  kube-bench:
+    image: aquasec/kube-bench:latest
+    volumes:
+      - ./reports:/reports
+    command: version  # Demo only
+    networks: [tools-net]
+
+volumes:
+  sonarqube_data:
+  clair_config:
+
+networks:
+  app-net:
+  tools-net:
